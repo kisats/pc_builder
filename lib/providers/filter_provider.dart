@@ -15,8 +15,6 @@ class FilterProvider extends ChangeNotifier{
 
   clearFilter() {}
 
-  setSort(dynamic sort) {}
-
   generateFilter(List list){}
 
   setSortOrder() {}

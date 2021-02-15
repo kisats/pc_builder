@@ -5,7 +5,7 @@ import 'package:pc_builder/models/filters/cpu_selection_filter.dart';
 import 'package:pc_builder/providers/selection_provider.dart';
 import 'package:queries/collections.dart';
 
-class CPUSelectionProvider extends SelectionProvider{
+class CPUSelectionProvider extends ChangeNotifier implements SelectionProvider{
   FireStore db;
 
   List<Cpu> filteredList;

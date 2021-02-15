@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:pc_builder/firestore.dart';
 import 'package:pc_builder/models/filters/motherboard_selection_filter.dart';
 import 'package:pc_builder/models/motherboard.dart';
+import 'package:pc_builder/providers/selection_provider.dart';
 
-class MotherboardSelectionProvider extends ChangeNotifier {
+class MotherboardSelectionProvider extends ChangeNotifier implements SelectionProvider{
   
   FireStore db;
 
@@ -14,6 +15,12 @@ class MotherboardSelectionProvider extends ChangeNotifier {
 
   bool isLoading;
 
+  applyFilter(filter) {}
+
+  List get components => db.motherboardList;
+
+  List get filtered => filteredList;
+
   MotherboardSelectionProvider(this.db) {
     isLoading = false;
     textController = TextEditingController();
@@ -22,7 +29,7 @@ class MotherboardSelectionProvider extends ChangeNotifier {
   }
 
   unfilteredList() async {
-    if (db.cpuList == null) {
+    if (components == null) {
       isLoading = true;
       notifyListeners();
       await db.loadMotherboards();

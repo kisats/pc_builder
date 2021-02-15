@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pc_builder/components/component_selection/component_selection.dart';
-import 'package:pc_builder/components/cpu_card.dart';
+import 'package:pc_builder/components/component_cards/cpu_card.dart';
 import 'package:pc_builder/firestore.dart';
 import 'package:pc_builder/providers/cpu/cpu_selection_filter_provider.dart';
 import 'package:pc_builder/providers/cpu/cpu_selection_provider.dart';

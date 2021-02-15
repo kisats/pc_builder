@@ -17,13 +17,13 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
               primarySwatch: Colors.blue,
               visualDensity: VisualDensity.compact,
-              highlightColor: Color.fromRGBO(169, 184, 206, 0.5),
+              highlightColor: Color.fromRGBO(88, 170, 244, 0.1),//Color.fromRGBO(169, 184, 206, 0.5),
               scaffoldBackgroundColor: Color.fromRGBO(236, 240, 244, 1.0),
               cursorColor: Color.fromRGBO(90, 112, 130, 1.0),
               buttonColor: Color.fromRGBO(85, 108, 138, 1.0),
               shadowColor: Color.fromRGBO(179, 194, 216, 1.0),
               accentColor: Color.fromRGBO(88, 191, 244, 1.0),
-              
+              splashColor: Color.fromRGBO(88, 191, 244, 0.3),
               iconTheme: IconThemeData(
                 color : Color.fromRGBO(169, 184, 206, 1.0),
               ),

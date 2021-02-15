@@ -6,6 +6,7 @@ import 'package:pc_builder/components/soft_container.dart';
 import 'package:pc_builder/components/soft_list_view.dart';
 import 'package:pc_builder/providers/new_build_provider.dart';
 import 'package:pc_builder/screens/cpu_selection.dart/cpu_selection.dart';
+import 'package:pc_builder/screens/motherboard_selection.dart/motherboard_selection.dart';
 import 'package:provider/provider.dart';
 
 import 'screen_components/appbar.dart';
@@ -27,7 +28,9 @@ class NewBuildScreen extends StatelessWidget {
                 AddPartCard(
                   icon: PCParts.motherboard,
                   text: "Motherboard",
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).push(FadeRoute(page: MotherboardSelection()));
+                  },
                 ),
                 AddPartCard(
                   icon: PCParts.videocard,

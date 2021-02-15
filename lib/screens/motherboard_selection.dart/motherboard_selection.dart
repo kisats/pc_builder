@@ -1,44 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:pc_builder/components/component_cards/motherboard_card.dart';
+import 'package:pc_builder/components/component_selection/component_selection.dart';
 import 'package:pc_builder/firestore.dart';
+import 'package:pc_builder/providers/filter_provider.dart';
 import 'package:pc_builder/providers/motherboard/motherboard_selection_filter_provider.dart';
 import 'package:pc_builder/providers/motherboard/motherboard_selection_provider.dart';
-import 'package:pc_builder/screens/motherboard_selection.dart/screen_components/appbar.dart';
+import 'package:pc_builder/providers/selection_provider.dart';
+import 'package:pc_builder/screens/motherboard_selection.dart/screen_components/filters.dart';
 import 'package:provider/provider.dart';
 
 class MotherboardSelection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    /* return MultiProvider(
+    return MultiProvider(
       providers: [
-        ChangeNotifierProvider<MotherboardSelectionProvider>(
+        ChangeNotifierProvider<SelectionProvider>(
           create: (_) => MotherboardSelectionProvider(FireStore())..unfilteredList(),
         ),
-        ChangeNotifierProvider<MotherboardSelectionFilterProvider>(
-            create: (_) => MotherboardSelectionFilterProvider()),
+        ChangeNotifierProvider<FilterProvider>(create: (_) => MotherboardSelectionFilterProvider()),
       ],
-      child: Scaffold(
-        appBar: MotherboardSelectionAppbar(),
-        endDrawer: SelectionEndDrawer(),
-        body: Consumer<CPUSelectionProvider>(builder: (_, state, __) {
-          if (state.isLoading)
-            return CircularProgressIndicator();
-          else {
-            if (Provider.of<CPUSelectionFilterProvider>(_, listen: false).filter == null)
-              Future.delayed(Duration(milliseconds: 50), () {
-                Provider.of<CPUSelectionFilterProvider>(_, listen: false)
-                    .generateFilter(state.db.cpuList);
-              });
-
-            return SoftListView.builder(
-              (_, index) => CPUCard(
-                cpu: state.filteredList[index],
-              ),
-              state.filteredList.length,
-            );
-          }
-        }),
+      child: ComponentSelection(
+        filters: MotherboardFilters(),
+        componentCardBuilder: (component) => MotherboardCard(
+          mb: component,
+        ),
       ),
-    ); */
-    return null;
+    );
   }
 }

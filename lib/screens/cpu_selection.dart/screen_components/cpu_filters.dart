@@ -163,6 +163,31 @@ class CpuFilters extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(top: 10, bottom: 15, left: 18, right: 10),
+                    child: Text("Price ", style: theme.textTheme.headline3.copyWith(fontSize: 16)),
+                  ),
+                  SoftRangeSlider(
+                    min: state.getPriceValue(state.minPrice),
+                    max: state.getPriceValue(state.maxPrice),
+                    start: state.getPriceValue(state.filter.selectedMinPrice),
+                    end: state.getPriceValue(state.filter.selectedMaxPrice),
+                    onChanged: (_, start, end) {
+                      state.setPrice(state.getPriceFromValue(start), state.getPriceFromValue(end));
+                    },
+                    format: (text) {
+                      var value = double.tryParse(text);
+                      var price = state.getPriceFromValue(value);
+                      if (price > state.maxPrice) price = state.maxPrice;
+                      if (price < state.minPrice) price = state.minPrice;
+                      return price.toStringAsFixed(0);
+                    },
+                    suffix: " €",
+                  ),
+                  Divider(
+                    height: 8,
+                    color: theme.inputDecorationTheme.hintStyle.color.withOpacity(0.8),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10, bottom: 15, left: 18, right: 10),
                     child:
                         Text("Core Count", style: theme.textTheme.headline3.copyWith(fontSize: 16)),
                   ),
@@ -210,31 +235,6 @@ class CpuFilters extends StatelessWidget {
                   Divider(
                     height: 8,
                     color: theme.inputDecorationTheme.hintStyle.color.withOpacity(0.7),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10, bottom: 15, left: 18, right: 10),
-                    child: Text("Price ", style: theme.textTheme.headline3.copyWith(fontSize: 16)),
-                  ),
-                  SoftRangeSlider(
-                    min: state.getPriceValue(state.minPrice),
-                    max: state.getPriceValue(state.maxPrice),
-                    start: state.getPriceValue(state.filter.selectedMinPrice),
-                    end: state.getPriceValue(state.filter.selectedMaxPrice),
-                    onChanged: (_, start, end) {
-                      state.setPrice(state.getPriceFromValue(start), state.getPriceFromValue(end));
-                    },
-                    format: (text) {
-                      var value = double.tryParse(text);
-                      var price = state.getPriceFromValue(value);
-                      if (price > state.maxPrice) price = state.maxPrice;
-                      if (price < state.minPrice) price = state.minPrice;
-                      return price.toStringAsFixed(0);
-                    },
-                    suffix: " €",
-                  ),
-                  Divider(
-                    height: 8,
-                    color: theme.inputDecorationTheme.hintStyle.color.withOpacity(0.8),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 10, bottom: 15, left: 18, right: 10),

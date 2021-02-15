@@ -4,7 +4,7 @@ import 'package:pc_builder/models/filters/cpu_selection_filter.dart';
 import 'package:pc_builder/providers/filter_provider.dart';
 import 'package:queries/collections.dart';
 
-class CPUSelectionFilterProvider extends FilterProvider {
+class CPUSelectionFilterProvider extends ChangeNotifier implements FilterProvider {
   double minPrice;
   double maxPrice;
 
@@ -27,6 +27,7 @@ class CPUSelectionFilterProvider extends FilterProvider {
 
   int coreStartValue;
   int coreEndValue;
+  
   dynamic get currentFilter => filter;
   bool get canBeOpened => filter != null;
   bool get hasChanged => filter != lastFilter;
