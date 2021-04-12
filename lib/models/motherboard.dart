@@ -8,6 +8,8 @@ class Motherboard {
   String size;
   String socket;
 
+  double perfermanceScore;
+
   Motherboard(
       {this.image,
       this.maxRam,

@@ -7,6 +7,14 @@ class Cpu {
   double boost;
   int rating;
   int consumption;
+  String socket;
+  String architecture;
+  String coreFamily;
+
+  double perfermanceScore;
+
+  bool get isIntel => name.contains("Intel");
+  bool get isAMD => name.contains("AMD");
 
   Cpu(
       {this.image,
@@ -16,17 +24,23 @@ class Cpu {
       this.speed,
       this.boost,
       this.rating,
-      this.consumption});
+      this.consumption,
+      this.socket,
+      this.architecture,
+      this.coreFamily});
 
   Cpu.fromJson(Map<String, dynamic> json) {
     image = json['image'];
-    cores = json['cores'];
-    price = json['price'];
+    cores = json['cores'] ?? 0;
+    price = json['price'] ?? 0;
     name = json['name'];
-    speed = json['speed'];
-    boost = json['boost'];
+    speed = json['speed'] ?? 0;
+    boost = json['boost'] ?? speed;
     rating = json['rating'];
-    consumption = json['consumption'];
+    consumption = json['consumption'] ?? 180;
+    socket = json['socket'];
+    architecture = json['architecture'];
+    coreFamily = json['coreFamily'];
   }
 
   Map<String, dynamic> toJson() {
@@ -39,6 +53,9 @@ class Cpu {
     data['boost'] = this.boost;
     data['rating'] = this.rating;
     data['consumption'] = this.consumption;
+    data['socket'] = this.socket;
+    data['architecture'] = this.architecture;
+    data['coreFamily'] = this.coreFamily;
     return data;
   }
 }

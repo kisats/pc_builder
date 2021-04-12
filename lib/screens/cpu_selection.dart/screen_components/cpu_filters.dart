@@ -2,9 +2,11 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pc_builder/components/soft_button.dart';
 import 'package:pc_builder/components/soft_container.dart';
 import 'package:pc_builder/components/soft_range_slider.dart';
 import 'package:pc_builder/components/soft_switch.dart';
+import 'package:pc_builder/models/sort_order.dart';
 import 'package:pc_builder/providers/cpu/cpu_selection_filter_provider.dart';
 import 'package:pc_builder/providers/filter_provider.dart';
 import 'package:provider/provider.dart';
@@ -96,25 +98,26 @@ class CpuFilters extends StatelessWidget {
                               ),
                             ),
                           ),
-                          SoftContainer(
-                            shadowColor: state.filter.sort == CPUSort.none
-                                ? theme.shadowColor.withOpacity(0.1)
+                          SoftButton(
+                            shadows: state.filter.sort == CPUSort.none
+                                ? [
+                                    BoxShadow(
+                                        color: Theme.of(context).shadowColor.withOpacity(0.33),
+                                        offset: Offset(0.0, 2.0),
+                                        blurRadius: 3,
+                                        spreadRadius: 1),
+                                  ]
                                 : null,
-                            child: InkWell(
-                                onTap:
-                                    state.filter.sort == CPUSort.none ? null : state.setSortOrder,
-                                borderRadius: BorderRadius.circular(8),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(12),
-                                  child: Icon(
-                                    state.filter.order == SortOrder.ascending
-                                        ? FontAwesomeIcons.sortAmountDownAlt
-                                        : FontAwesomeIcons.sortAmountDown,
-                                    color: state.filter.sort == CPUSort.none
-                                        ? theme.iconTheme.color.withOpacity(0.5)
-                                        : theme.iconTheme.color,
-                                  ),
-                                )),
+                            onTap: state.filter.sort == CPUSort.none ? null : state.setSortOrder,
+                            padding: const EdgeInsets.all(12),
+                            child: Icon(
+                              state.filter.order == SortOrder.ascending
+                                  ? FontAwesomeIcons.sortAmountDownAlt
+                                  : FontAwesomeIcons.sortAmountDown,
+                              color: state.filter.sort == CPUSort.none
+                                  ? theme.iconTheme.color.withOpacity(0.5)
+                                  : theme.iconTheme.color,
+                            ),
                           ),
                         ],
                       )),

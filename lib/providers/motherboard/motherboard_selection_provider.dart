@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:pc_builder/firestore.dart';
 import 'package:pc_builder/models/filters/motherboard_selection_filter.dart';
 import 'package:pc_builder/models/motherboard.dart';
+import 'package:pc_builder/models/sort_order.dart';
 import 'package:pc_builder/providers/selection_provider.dart';
+import 'package:queries/collections.dart';
 
-class MotherboardSelectionProvider extends ChangeNotifier implements SelectionProvider{
-  
+class MotherboardSelectionProvider extends ChangeNotifier implements SelectionProvider {
   FireStore db;
 
   List<Motherboard> filteredList;
   TextEditingController textController;
   MotherboardSelectionFilter filter;
+  ScrollController scroll;
   FocusNode focus;
 
   bool isLoading;
-
-  applyFilter(filter) {}
 
   List get components => db.motherboardList;
 
@@ -26,6 +26,7 @@ class MotherboardSelectionProvider extends ChangeNotifier implements SelectionPr
     textController = TextEditingController();
     textController.addListener(search);
     focus = FocusNode();
+    scroll = ScrollController();
   }
 
   unfilteredList() async {
@@ -42,52 +43,43 @@ class MotherboardSelectionProvider extends ChangeNotifier implements SelectionPr
   search() {
     filterList();
     notifyListeners();
+    moveToStart();
+  }
+
+  applyFilter(filter) {
+    this.filter = filter;
+    filterList();
+    notifyListeners();
+    moveToStart();
+  }
+
+  moveToStart(){
+    if(scroll.offset > 0)
+    scroll.jumpTo(0);
   }
 
   filterList() {
-    /* if (filter != null) {
-      filteredList = Collection(db.cpuList)
-          .where((e) => e.cores >= filter.selectedMinCores && e.cores <= filter.selectedMaxCores)
-          .where((e) => e.speed >= filter.selectedMinClock && e.speed <= filter.selectedMaxClock)
+    filteredList = db.motherboardList.toList();
+    if (filter != null) {
+      filteredList = Collection(filteredList)
           .where((e) => e.price >= filter.selectedMinPrice && e.price <= filter.selectedMaxPrice)
-          .where((e) =>
-              e.consumption >= filter.selectedMinConsumption &&
-              e.consumption <= filter.selectedMaxConsumption)
+          .where((e) => e.ramSlots >= filter.ramSlotsMin && e.ramSlots <= filter.ramSlotsMax)
           .toList();
-      if (!filter.showAmd) filteredList.removeWhere((e) => e.name.toLowerCase().contains("amd"));
-      if (!filter.showIntel)
-        filteredList.removeWhere((e) => e.name.toLowerCase().contains("intel"));
+      if (!filter.allSizes) filteredList.removeWhere((e) => !filter.size.contains(e.size));
+      if (!filter.allSockets) filteredList.removeWhere((e) => !filter.sockets.contains(e.socket));
     }
     if (textController.text?.isNotEmpty != null)
       filteredList
           .removeWhere((e) => !e.name.toLowerCase().contains(textController.text.toLowerCase()));
 
-    if (filter != null && filter.sort != CPUSort.none) {
+    if (filter != null && filter.sort != MotherboardSort.none) {
       filteredList.sort(sort);
-    } */
+    }
   }
 
-  /* int sort(Cpu a, Cpu b) {
-    switch (filter.sort) {
-      case CPUSort.cores:
-        return filter.order == SortOrder.descending
-            ? b.cores.compareTo(a.cores)
-            : a.cores.compareTo(b.cores);
-      case CPUSort.clock:
-        return filter.order == SortOrder.descending
-            ? b.speed.compareTo(a.speed)
-            : a.speed.compareTo(b.speed);
-      case CPUSort.price:
-        return filter.order == SortOrder.descending
-            ? b.price.compareTo(a.price)
-            : a.price.compareTo(b.price);
-      case CPUSort.consumption:
-        return filter.order == SortOrder.descending
-            ? b.consumption.compareTo(a.consumption)
-            : a.consumption.compareTo(b.consumption);
-      default:
-        return -1;
-    }
-  } */
-
+  int sort(Motherboard a, Motherboard b) {
+    return filter.order == SortOrder.descending
+        ? b.price.compareTo(a.price)
+        : a.price.compareTo(b.price);
+  }
 }

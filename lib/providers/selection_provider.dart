@@ -4,6 +4,7 @@ class SelectionProvider extends ChangeNotifier{
 
   TextEditingController textController;
   FocusNode focus;
+  ScrollController scroll;
 
   List get components => null;
 

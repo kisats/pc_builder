@@ -5,9 +5,13 @@ class RAM {
   String image;
   double price;
   double priceGB;
-  String speed;
+  int speed;
+  String memoryType;
   int stickCount;
   int stickMemory;
+  double voltage;
+
+  double perfermanceScore;
 
   RAM(
       {this.name,
@@ -18,18 +22,21 @@ class RAM {
       this.priceGB,
       this.speed,
       this.stickCount,
-      this.stickMemory});
+      this.stickMemory,
+      this.voltage});
 
   RAM.fromJson(Map<String, dynamic> json) {
     name = json['name'];
-    casLatency = json['casLatency'];
-    fwLatency = json['fwLatency'];
+    casLatency = json['casLatency'] ?? 0;
+    fwLatency = json['fwLatency'] ?? 0;
     image = json['image'];
-    price = json['price'];
-    priceGB = json['priceGB'];
-    speed = json['speed'];
-    stickCount = json['stickCount'];
-    stickMemory = json['stickMemory'];
+    price = json['price'] ?? 0;
+    priceGB = json['priceGB'] ?? 0;
+    speed = json['speed'] ?? 0;
+    memoryType = json['memoryType'];
+    stickCount = json['stickCount'] ?? 0;
+    stickMemory = json['stickMemory'] ?? 0;
+    voltage = json['voltage'] ?? 0;
   }
 
   Map<String, dynamic> toJson() {
@@ -43,6 +50,18 @@ class RAM {
     data['speed'] = this.speed;
     data['stickCount'] = this.stickCount;
     data['stickMemory'] = this.stickMemory;
+    data['voltage'] = this.voltage;
+    data['speed'] = this.speed;
+    data['memoryType'] = this.memoryType;
     return data;
+  }
+
+    double get ddrValue{
+    switch (memoryType) {
+      case "DDR2": return 2;
+      case "DDR3": return 4;
+      case "DDR4": return 7;
+      default: return 0;
+    }
   }
 }

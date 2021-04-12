@@ -35,29 +35,30 @@ class SoftContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: margin,
-        padding: padding,
-        height: height,
-        width: width,
-        decoration: BoxDecoration(
-            color: color ?? Theme.of(context).cardColor,
-            borderRadius: borderRadiusGeom ?? BorderRadius.circular(borderRadius ?? 8),
-            boxShadow: shadows ??
-                [
-                  BoxShadow(
-                      color: shadowColor ?? Theme.of(context).shadowColor.withOpacity(0.36),
-                      offset: shadowOffset ?? Offset(0.0, 2.0),
-                      blurRadius: shadowBlur ?? 2,
-                      spreadRadius: shadowSpread ?? 1),
-                  BoxShadow(
-                      color: shadowColor ?? Theme.of(context).shadowColor.withOpacity(0.47),
-                      offset: shadowOffset ?? Offset(0.0, 3.0),
-                      blurRadius: shadowBlur ?? 9,
-                      spreadRadius: shadowSpread ?? 3)
-                ]),
-        child: Material(
-            borderRadius: borderRadiusGeom ?? BorderRadius.circular(borderRadius ?? 8),
-            color: color ?? Theme.of(context).cardColor,
-            child: child));
+      margin: margin,
+      padding: padding,
+      height: height,
+      width: width,
+      decoration: BoxDecoration(
+          color: color ?? Theme.of(context).cardColor,
+          borderRadius: borderRadiusGeom ?? BorderRadius.circular(borderRadius ?? 8),
+          boxShadow: shadows ??
+              [
+                BoxShadow(
+                    color: shadowColor ?? Theme.of(context).shadowColor.withOpacity(0.36),
+                    offset: shadowOffset ?? Offset(0.0, 2.0),
+                    blurRadius: shadowBlur ?? 2,
+                    spreadRadius: shadowSpread ?? 1),
+                BoxShadow(
+                    color: shadowColor ?? Theme.of(context).shadowColor.withOpacity(0.47),
+                    offset: shadowOffset ?? Offset(0.0, 3.0),
+                    blurRadius: shadowBlur ?? 9,
+                    spreadRadius: shadowSpread ?? 3)
+              ]),
+      child: /*  Material(
+          borderRadius: borderRadiusGeom ?? BorderRadius.circular(borderRadius ?? 8),
+          color: color ?? Theme.of(context).cardColor,
+          child: */ child,
+    );
   }
 }

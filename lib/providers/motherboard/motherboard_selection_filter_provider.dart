@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pc_builder/components/expansion_tile.dart';
-import 'package:pc_builder/models/cpu.dart';
 import 'package:pc_builder/models/filters/motherboard_selection_filter.dart';
 import 'package:pc_builder/models/motherboard.dart';
+import 'package:pc_builder/models/sort_order.dart';
 import 'package:pc_builder/providers/filter_provider.dart';
 import 'package:queries/collections.dart';
 
@@ -31,11 +31,9 @@ class MotherboardSelectionFilterProvider extends ChangeNotifier implements Filte
   int coreEndValue;
 
   bool get canBeOpened => filter != null;
-
   get currentFilter => filter;
-
-  bool get hasChanged => filter != lastFilter;
-  bool get canClear => filter != defoultFilter;
+  bool get hasChanged => !MotherboardSelectionFilter.areEquel(filter, lastFilter);
+  bool get canClear => !MotherboardSelectionFilter.areEquel(filter, defoultFilter);
 
   generateFilter(dynamic list) {
     var col = Collection(list as List<Motherboard>);
@@ -48,14 +46,15 @@ class MotherboardSelectionFilterProvider extends ChangeNotifier implements Filte
 
     sizes = col.select((e) => e.size).distinct().toList();
     sockets = col.select((e) => e.socket).distinct().toList();
+    sockets.sort((a, b) => a.compareTo(b));
 
     filter = MotherboardSelectionFilter(
         selectedMinPrice: minPrice,
         selectedMaxPrice: maxPrice,
         ramSlotsMin: minRAMSlots,
         ramSlotsMax: maxRAMSlots,
-        size: sizes,
-        sockets: sockets,
+        size: [],
+        sockets: [],
         sort: MotherboardSort.none,
         order: SortOrder.none,
         allSizes: true,
@@ -69,16 +68,19 @@ class MotherboardSelectionFilterProvider extends ChangeNotifier implements Filte
     notifyListeners();
   }
 
-  @override
   applyFilter() {
-    // TODO: implement applyFilter
-    throw UnimplementedError();
+    lastFilter = filter.copy;
+    wasApplied = !MotherboardSelectionFilter.areEquel(filter, defoultFilter);
+    notifyListeners();
   }
 
-  @override
   clearFilter() {
-    // TODO: implement clearFilter
-    throw UnimplementedError();
+    if (!filter.allSizes) sizeController.collapse();
+    if (!filter.allSockets) socketController.collapse();
+    filter = defoultFilter.copy;
+    lastFilter = defoultFilter.copy;
+    wasApplied = false;
+    notifyListeners();
   }
 
   @override
@@ -88,7 +90,7 @@ class MotherboardSelectionFilterProvider extends ChangeNotifier implements Filte
   }
 
   double getPriceValue(double price) {
-    var valueblePrice = maxPrice / 1.4;
+    var valueblePrice = maxPrice / 1.2;
 
     if (price > valueblePrice) {
       return valueblePrice + ((price - valueblePrice) / 10) + 1;
@@ -98,7 +100,7 @@ class MotherboardSelectionFilterProvider extends ChangeNotifier implements Filte
   }
 
   double getPriceFromValue(double value) {
-    var valueblePrice = maxPrice / 1.4;
+    var valueblePrice = maxPrice / 1.2;
 
     if (value > valueblePrice) {
       return valueblePrice + ((value - valueblePrice) * 10);
@@ -147,64 +149,23 @@ class MotherboardSelectionFilterProvider extends ChangeNotifier implements Filte
     notifyListeners();
   }
 
-  /* setIntel(bool value) {
-    filter.showIntel = value;
+  addSize(String size) {
+    filter.size.add(size);
     notifyListeners();
   }
 
-  setAMD(bool value) {
-    filter.showAmd = value;
+  removeSize(String size) {
+    filter.size.remove(size);
     notifyListeners();
   }
 
-  setCores(int start, int end) {
-    filter.selectedMinCores = start;
-    filter.selectedMaxCores = end;
-
-    coreStartValue = getCoreCountPrecent(start);
-    coreEndValue = getCoreCountPrecent(end);
+  addSocket(String socket) {
+    filter.sockets.add(socket);
     notifyListeners();
   }
 
-  setClock(double start, double end) {
-    filter.selectedMinClock = start;
-    filter.selectedMaxClock = end;
+  removeSocket(String socket) {
+    filter.sockets.remove(socket);
     notifyListeners();
   }
-
-  setPrice(double start, double end) {
-    filter.selectedMinPrice = start >= minPrice ? start : minPrice;
-    filter.selectedMaxPrice = end <= maxPrice ? end : maxPrice;
-    notifyListeners();
-  }
-
-  setConsumption(int start, int end) {
-    filter.selectedMinConsumption = start;
-    filter.selectedMaxConsumption = end;
-    notifyListeners();
-  }
-
-  applyFilter() {
-    lastFilter = filter.copy();
-    wasApplied = filter != defoultFilter;
-    notifyListeners();
-  }
-
-  clearFilter() {
-    filter = defoultFilter.copy();
-    notifyListeners();
-  }
-
-  setSort(sort) {
-    filter.sort = sort;
-    if (sort == CPUSort.none)
-      filter.order = SortOrder.none;
-    else if (filter.order == SortOrder.none) filter.order = SortOrder.descending;
-    notifyListeners();
-  }
-
-  setSortOrder() {
-    filter.order = filter.order == SortOrder.ascending ? SortOrder.descending : SortOrder.ascending;
-    notifyListeners();
-  } */
 }

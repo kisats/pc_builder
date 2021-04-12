@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:pc_builder/models/sort_order.dart';
 
 class CPUSelectionFilter extends Equatable {
   bool showAmd;
@@ -67,5 +68,3 @@ class CPUSelectionFilter extends Equatable {
 }
 
 enum CPUSort { none, cores, clock, price, consumption }
-
-enum SortOrder { ascending, descending, none }

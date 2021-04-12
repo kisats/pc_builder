@@ -8,6 +8,8 @@ class PowerSupply {
   int rating;
   int wattage;
 
+  double perfermanceScore;
+
   PowerSupply(
       {this.efficiency,
       this.formFactor,
@@ -17,6 +19,25 @@ class PowerSupply {
       this.price,
       this.rating,
       this.wattage});
+  
+  double get efficiencyValue {
+    switch (efficiency) {
+      case "80+":
+        return 4;
+      case "80+ Bronze":
+        return 5;
+      case "80+ Silver":
+        return 6;
+      case "80+ Gold":
+        return 7;
+      case "80+ Platinum":
+        return 8;
+      case "80+ Titanium":
+        return 9;
+      default:
+        return 0;
+    }
+  }
 
   PowerSupply.fromJson(Map<String, dynamic> json) {
     efficiency = json['efficiency'];
@@ -26,7 +47,7 @@ class PowerSupply {
     name = json['name'];
     price = json['price'];
     rating = json['rating'];
-    wattage = json['wattage'];
+    wattage = (json['wattage'] as double).floor();
   }
 
   Map<String, dynamic> toJson() {

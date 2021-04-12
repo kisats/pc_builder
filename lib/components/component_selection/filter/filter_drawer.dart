@@ -17,8 +17,13 @@ class FilterDrawer extends StatelessWidget {
     var theme = Theme.of(context);
     return SoftContainer(
       height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width / 1.2,
-      shadows: [],
+      shadows: [
+        BoxShadow(
+            color: Theme.of(context).shadowColor.withOpacity(0.4),
+            offset: Offset(0.0, 2.0),
+            blurRadius: 2,
+            spreadRadius: 1),
+      ],
       shadowColor: theme.textTheme.headline1.color.withOpacity(0.7),
       borderRadiusGeom:
           BorderRadius.only(topLeft: Radius.circular(8), bottomLeft: Radius.circular(8)),
@@ -37,7 +42,8 @@ class FilterDrawer extends StatelessWidget {
                   ).createShader(rect);
                 },
                 blendMode: BlendMode.dstOut,
-                child: mainFilter,
+                child: Consumer<FilterProvider>(
+                    builder: (__, state, _) => state.canBeOpened ? mainFilter : Container()),
               ),
               bottomNavigationBar: Consumer<FilterProvider>(
                   builder: (__, state, _) => FilterBottomButtons(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pc_builder/models/cpu.dart';
 import 'package:pc_builder/models/filters/cpu_selection_filter.dart';
+import 'package:pc_builder/models/sort_order.dart';
 import 'package:pc_builder/providers/filter_provider.dart';
 import 'package:queries/collections.dart';
 
@@ -142,6 +143,8 @@ class CPUSelectionFilterProvider extends ChangeNotifier implements FilterProvide
 
   clearFilter() {
     filter = defoultFilter.copy();
+    lastFilter = defoultFilter.copy();
+    wasApplied = false;
     notifyListeners();
   }
 

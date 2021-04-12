@@ -1,6 +1,6 @@
 class SSD {
   int cache;
-  int capacity;
+  double capacity;
   String formFactor;
   String image;
   String interface;
@@ -9,6 +9,8 @@ class SSD {
   double price;
   double priceGB;
   int rating;
+
+  double perfermanceScore;
 
   SSD(
       {this.cache,
@@ -23,15 +25,15 @@ class SSD {
       this.rating});
 
   SSD.fromJson(Map<String, dynamic> json) {
-    cache = json['cache'];
-    capacity = json['capacity'];
+    cache = json['cache'] ?? 0;
+    capacity = json['capacity'] ?? 0;
     formFactor = json['formFactor'];
     image = json['image'];
     interface = json['interface'];
     isNVME = json['isNVME'];
     name = json['name'];
-    price = json['price'];
-    priceGB = json['priceGB'];
+    price = json['price'] ?? 0;
+    priceGB = json['priceGB'] ?? 0;
     rating = json['rating'];
   }
 

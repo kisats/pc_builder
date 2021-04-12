@@ -1,6 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pc_builder/components/expansion_tile.dart';
 import 'package:pc_builder/components/soft_button.dart';
@@ -8,6 +7,7 @@ import 'package:pc_builder/components/soft_container.dart';
 import 'package:pc_builder/components/soft_range_slider.dart';
 import 'package:pc_builder/components/soft_switch.dart';
 import 'package:pc_builder/models/filters/motherboard_selection_filter.dart';
+import 'package:pc_builder/models/sort_order.dart';
 import 'package:pc_builder/providers/filter_provider.dart';
 import 'package:pc_builder/providers/motherboard/motherboard_selection_filter_provider.dart';
 import 'package:provider/provider.dart';
@@ -156,6 +156,7 @@ class MotherboardFilters extends StatelessWidget {
                 margin: const EdgeInsets.all(8),
                 child: AppExpansionTile(
                   controller: state.sizeController,
+                  initiallyExpanded: !state.filter.allSizes,
                   title: Padding(
                     padding: const EdgeInsets.only(left: 18, right: 15, bottom: 10, top: 10),
                     child: Row(
@@ -195,17 +196,30 @@ class MotherboardFilters extends StatelessWidget {
                                   spacing: 10,
                                   runSpacing: 10,
                                   alignment: WrapAlignment.spaceBetween,
-                                  children: state.sizes
-                                      .map((e) => SoftButton(
-                                            padding: const EdgeInsets.only(
-                                                top: 6, bottom: 6, left: 8, right: 8),
-                                            child: Text(
-                                              e,
-                                              style: theme.textTheme.headline1,
-                                            ),
-                                            onTap: () {},
-                                          ))
-                                      .toList()),
+                                  children: state.sizes.map((e) {
+                                    bool isSelected = state.filter.size.contains(e);
+                                    return SoftButton(
+                                      color: isSelected ? theme.accentColor : null,
+                                      shadows: [
+                                        BoxShadow(
+                                            color: Theme.of(context).shadowColor.withOpacity(0.56),
+                                            offset: Offset(0.0, 2.0),
+                                            blurRadius: 2,
+                                            spreadRadius: 1.5)
+                                      ],
+                                      padding: const EdgeInsets.only(
+                                          top: 6, bottom: 6, left: 8, right: 8),
+                                      child: Text(
+                                        e,
+                                        style: isSelected
+                                            ? theme.textTheme.headline1
+                                                .copyWith(color: Colors.white)
+                                            : theme.textTheme.headline1,
+                                      ),
+                                      onTap: () =>
+                                          isSelected ? state.removeSize(e) : state.addSize(e),
+                                    );
+                                  }).toList()),
                             ),
                           ],
                         )),
@@ -215,6 +229,7 @@ class MotherboardFilters extends StatelessWidget {
               margin: const EdgeInsets.all(8),
               child: AppExpansionTile(
                   controller: state.socketController,
+                  initiallyExpanded: !state.filter.allSockets,
                   title: Padding(
                     padding: const EdgeInsets.only(left: 18, right: 15, bottom: 10, top: 10),
                     child: Row(
@@ -252,17 +267,29 @@ class MotherboardFilters extends StatelessWidget {
                                 spacing: 10,
                                 runSpacing: 10,
                                 alignment: WrapAlignment.spaceBetween,
-                                children: state.sockets
-                                    .map((e) => SoftButton(
-                                          padding: const EdgeInsets.only(
-                                              top: 6, bottom: 6, left: 8, right: 8),
-                                          child: Text(
-                                            e,
-                                            style: theme.textTheme.headline1,
-                                          ),
-                                          onTap: () {},
-                                        ))
-                                    .toList()),
+                                children: state.sockets.map((e) {
+                                  bool isSelected = state.filter.sockets.contains(e);
+                                  return SoftButton(
+                                    color: isSelected ? theme.accentColor : null,
+                                    shadows: [
+                                      BoxShadow(
+                                          color: Theme.of(context).shadowColor.withOpacity(0.56),
+                                          offset: Offset(0.0, 2.0),
+                                          blurRadius: 2,
+                                          spreadRadius: 1.5)
+                                    ],
+                                    padding:
+                                        const EdgeInsets.only(top: 6, bottom: 6, left: 8, right: 8),
+                                    child: Text(
+                                      e,
+                                      style: isSelected
+                                          ? theme.textTheme.headline1.copyWith(color: Colors.white)
+                                          : theme.textTheme.headline1,
+                                    ),
+                                    onTap: () =>
+                                        isSelected ? state.removeSocket(e) : state.addSocket(e),
+                                  );
+                                }).toList()),
                           )
                         ]))
                   ]),

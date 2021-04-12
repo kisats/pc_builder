@@ -4,20 +4,23 @@ class SoftListView extends StatelessWidget {
   final Function(BuildContext, int) itemBuilder;
   final int itemCount;
   final List<Widget> items;
+  final ScrollController scroll;
 
-  const SoftListView._(this.itemBuilder, this.itemCount, this.items);
+  const SoftListView._(this.itemBuilder, this.itemCount, this.items, this.scroll);
 
-  const SoftListView.builder(Function(BuildContext, int) itemBuilder, int itemCount)
-      : this._(itemBuilder, itemCount, null);
+  const SoftListView.builder(
+      Function(BuildContext, int) itemBuilder, int itemCount, ScrollController scrollController)
+      : this._(itemBuilder, itemCount, null, scrollController);
 
-  const SoftListView(List<Widget> items) : this._(null, null, items);
+  const SoftListView(List<Widget> items, ScrollController scrollController)
+      : this._(null, null, items, scrollController);
 
   @override
   Widget build(BuildContext context) {
     return Scrollbar(
         thickness: 5,
         radius: Radius.circular(10),
-        controller: ScrollController(),
+        controller: scroll,
         child: ShaderMask(
             shaderCallback: (Rect rect) {
               return LinearGradient(
@@ -30,6 +33,7 @@ class SoftListView extends StatelessWidget {
             blendMode: BlendMode.dstOut,
             child: items != null
                 ? ListView(
+                    controller: scroll,
                     padding: const EdgeInsets.only(top: 15, bottom: 15),
                     physics: BouncingScrollPhysics(),
                     children: items,
@@ -37,6 +41,7 @@ class SoftListView extends StatelessWidget {
                 : ListView.builder(
                     padding: const EdgeInsets.only(top: 15, bottom: 15),
                     physics: BouncingScrollPhysics(),
+                    controller: scroll,
                     itemCount: itemCount,
                     itemBuilder: itemBuilder,
                   )));

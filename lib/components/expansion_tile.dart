@@ -35,11 +35,12 @@ class AppExpansionTileState extends State<AppExpansionTile> with SingleTickerPro
     super.initState();
 
     _controller = new AnimationController(duration: _kExpand, vsync: this);
-    widget.controller.controller = _controller;
+
     _easeInAnimation = new CurvedAnimation(parent: _controller, curve: Curves.easeIn);
 
-    _isExpanded = PageStorage.of(context)?.readState(context) ?? widget.initiallyExpanded;
+    _isExpanded = widget.initiallyExpanded;
     if (_isExpanded) _controller.value = 1.0;
+    widget.controller.controller = _controller;
   }
 
   @override

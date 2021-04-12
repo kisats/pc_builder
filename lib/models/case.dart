@@ -8,6 +8,8 @@ class Case {
   String sidePanel;
   String type;
 
+  double perfermanceScore;
+
   Case(
       {this.externalBays,
       this.image,

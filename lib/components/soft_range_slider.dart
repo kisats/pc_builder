@@ -1,6 +1,133 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
 
+class SoftSlider extends StatelessWidget {
+  final double min;
+  final double max;
+
+  final double value;
+
+  final double devideBy;
+  final String suffix;
+
+  final double handlerWidth;
+
+  final bool noTooltip;
+
+  final List<FlutterSliderFixedValue> fixedValues;
+  final Function(String) format;
+
+  final Function(int, dynamic, dynamic) onChanged;
+
+  const SoftSlider(
+      {Key key,
+      this.min,
+      this.max,
+      this.value,
+      this.devideBy,
+      this.suffix,
+      this.onChanged,
+      this.fixedValues,
+      this.format,
+      this.noTooltip,
+      this.handlerWidth})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+    return FlutterSlider(
+      min: devideBy != null ? min * devideBy : min,
+      max: devideBy != null ? max * devideBy : max,
+      touchSize: 5,
+      handlerHeight: 28,
+      handlerWidth: handlerWidth ?? 28,
+      jump: false,
+      selectByTap: false,
+      fixedValues: fixedValues,
+      trackBar: FlutterSliderTrackBar(
+          activeTrackBarDraggable: false,
+          inactiveDisabledTrackBarColor: theme.scaffoldBackgroundColor,
+          inactiveTrackBarHeight: 7,
+          activeTrackBarHeight: 8,
+          inactiveTrackBar: BoxDecoration(
+              color: theme.scaffoldBackgroundColor,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                    color: Color.fromRGBO(179, 194, 216, 0.6),
+                    offset: Offset(0.0, 1.0),
+                    blurRadius: 1,
+                    spreadRadius: 0.5),
+              ]),
+          activeTrackBar: BoxDecoration(color: Color.fromRGBO(88, 191, 244, 1.0), boxShadow: [
+            BoxShadow(
+                color: Color.fromRGBO(179, 194, 216, 0.6),
+                offset: Offset(0.0, 1.0),
+                blurRadius: 1,
+                spreadRadius: 0.5),
+          ])),
+      handler: handler(context),
+      onDragCompleted: onChanged,
+      onDragging: onChanged,
+      values: [
+        devideBy != null ? value * devideBy : value,
+      ],
+      tooltip: noTooltip ?? false
+          ? FlutterSliderTooltip(
+              custom: (value) => Container(
+                height: 1,
+                width: 1,
+              ),
+            )
+          : FlutterSliderTooltip(
+              alwaysShowTooltip: true,
+              format: format ??
+                  (value) {
+                    if (devideBy != null)
+                      return (double.tryParse(value) / devideBy).toStringAsFixed(devideBy ~/ 10);
+
+                    return value.substring(0, value.indexOf("."));
+                  },
+              rightSuffix: suffix != null
+                  ? Text(suffix,
+                      style: theme.textTheme.headline1.copyWith(fontWeight: FontWeight.w600))
+                  : null,
+              leftSuffix: suffix != null
+                  ? Text(suffix,
+                      style: theme.textTheme.headline1.copyWith(fontWeight: FontWeight.w600))
+                  : null,
+              positionOffset: FlutterSliderTooltipPositionOffset(top: -20),
+              textStyle: theme.textTheme.headline1,
+              boxStyle: FlutterSliderTooltipBox()),
+    );
+  }
+
+  FlutterSliderHandler handler(BuildContext context) {
+    return FlutterSliderHandler(
+        decoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle, boxShadow: [
+          BoxShadow(
+              color: Color.fromRGBO(179, 194, 216, 0.4),
+              offset: Offset(0.0, 0.5),
+              blurRadius: 2,
+              spreadRadius: 1),
+          BoxShadow(
+              color: Color.fromRGBO(179, 194, 216, 0.4),
+              offset: Offset(0.0, 3.0),
+              blurRadius: 3,
+              spreadRadius: 1)
+        ]),
+        child: Container(
+          height: 15,
+          width: 15,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Theme.of(context).inputDecorationTheme.hintStyle.color.withOpacity(0.7),
+          ),
+        ));
+  }
+}
+
 class SoftRangeSlider extends StatelessWidget {
   final double min;
   final double max;

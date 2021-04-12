@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pc_builder/components/soft_button.dart';
-import 'package:pc_builder/components/soft_container.dart';
 
 class FilterBottomButtons extends StatelessWidget {
   final Function() onClear;

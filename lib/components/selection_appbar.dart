@@ -3,21 +3,14 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pc_builder/components/icons/pop_icon.dart';
 import 'package:pc_builder/components/icons/soft_icon_button.dart';
 import 'package:pc_builder/components/soft_container.dart';
-import 'package:pc_builder/providers/cpu/cpu_selection_provider.dart';
 import 'package:pc_builder/providers/filter_provider.dart';
 import 'package:pc_builder/providers/selection_provider.dart';
 import 'package:provider/provider.dart';
 
 class SelectionAppbar extends StatelessWidget implements PreferredSizeWidget {
-/*   final Color filterIconColor;
-  final bool canOpenFilter;
-  final FocusNode focus;
-  final TextEditingController controller;
-  final String hint; */
+  final Function() toggleFilter;
 
-/*   const SelectionAppbar(
-      {Key key, this.filterIconColor, this.canOpenFilter, this.focus, this.controller, this.hint})
-      : super(key: key); */
+  const SelectionAppbar({Key key, this.toggleFilter}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +37,8 @@ class SelectionAppbar extends StatelessWidget implements PreferredSizeWidget {
                       if (!currentScope.hasPrimaryFocus && currentScope.hasFocus) {
                         FocusManager.instance.primaryFocus.unfocus();
                       }
-                      Scaffold.of(context).openEndDrawer();
+                      //Scaffold.of(context).openEndDrawer();
+                      toggleFilter();
                     }
                   : null,
             ),

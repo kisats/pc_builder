@@ -9,6 +9,8 @@ class Cooler {
   int radiatorSize;
   int rating;
 
+  double perfermanceScore;
+
   Cooler(
       {this.image,
       this.maxNoise,

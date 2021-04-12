@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pc_builder/components/component_cards/motherboard_card.dart';
+import 'package:pc_builder/screens/motherboard_selection.dart/screen_components/motherboard_card.dart';
 import 'package:pc_builder/components/component_selection/component_selection.dart';
 import 'package:pc_builder/firestore.dart';
 import 'package:pc_builder/providers/filter_provider.dart';

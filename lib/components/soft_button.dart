@@ -77,13 +77,15 @@ class _SoftButtonState extends State<SoftButton> {
         child: Material(
             borderRadius:
                 widget.borderRadiusGeom ?? BorderRadius.circular(widget.borderRadius ?? 8),
-            color: widget.color ?? Theme.of(context).cardColor,
+            color: Colors.transparent,
             child: InkWell(
-              onTapDown: _onTapDown,
-              onTap: () {
-                _onTapUp();
-                widget.onTap();
-              },
+              onTapDown: widget.onTap != null ? _onTapDown : null,
+              onTap: widget.onTap != null
+                  ? () {
+                      _onTapUp();
+                      widget.onTap();
+                    }
+                  : null,
               onTapCancel: _onTapUp,
               borderRadius:
                   widget.borderRadiusGeom ?? BorderRadius.circular(widget.borderRadius ?? 8),

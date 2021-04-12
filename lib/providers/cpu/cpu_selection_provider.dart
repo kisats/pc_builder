@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pc_builder/firestore.dart';
 import 'package:pc_builder/models/cpu.dart';
 import 'package:pc_builder/models/filters/cpu_selection_filter.dart';
+import 'package:pc_builder/models/sort_order.dart';
 import 'package:pc_builder/providers/selection_provider.dart';
 import 'package:queries/collections.dart';
 
@@ -11,6 +12,7 @@ class CPUSelectionProvider extends ChangeNotifier implements SelectionProvider{
   List<Cpu> filteredList;
   TextEditingController textController;
   CPUSelectionFilter filter;
+  ScrollController scroll;
   FocusNode focus;
 
   bool isLoading;
@@ -23,6 +25,7 @@ class CPUSelectionProvider extends ChangeNotifier implements SelectionProvider{
     textController = TextEditingController();
     textController.addListener(search);
     focus = FocusNode();
+    scroll = ScrollController();
   }
 
   unfilteredList() async {
@@ -39,18 +42,25 @@ class CPUSelectionProvider extends ChangeNotifier implements SelectionProvider{
   search() {
     filterList();
     notifyListeners();
+    moveToStart();
+  }
+
+  moveToStart(){
+    if(scroll.offset > 0)
+    scroll.jumpTo(0);
   }
 
   applyFilter(dynamic filter) {
     this.filter = filter;
     filterList();
     notifyListeners();
+    moveToStart();
   }
 
   filterList() {
     filteredList = db.cpuList.toList();
     if (filter != null) {
-      filteredList = Collection(db.cpuList)
+      filteredList = Collection(filteredList)
           .where((e) => e.cores >= filter.selectedMinCores && e.cores <= filter.selectedMaxCores)
           .where((e) => e.speed >= filter.selectedMinClock && e.speed <= filter.selectedMaxClock)
           .where((e) => e.price >= filter.selectedMinPrice && e.price <= filter.selectedMaxPrice)
