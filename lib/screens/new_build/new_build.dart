@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pc_builder/components/add_part_card.dart';
 import 'package:pc_builder/components/component_build_card.dart';
 import 'package:pc_builder/components/fade_route.dart';
 import 'package:pc_builder/components/icons/p_c_parts_icons.dart';
+import 'package:pc_builder/components/price_chip.dart';
+import 'package:pc_builder/components/soft_container.dart';
 import 'package:pc_builder/components/soft_list_view.dart';
-import 'package:pc_builder/models/autobuild.dart';
-import 'package:pc_builder/providers/build_generation/autobuild_provider.dart';
-import 'package:pc_builder/providers/build_generation/autobuild_provider.dart';
 import 'package:pc_builder/providers/new_build_provider.dart';
 import 'package:pc_builder/screens/case_selection/case_selection.dart';
 import 'package:pc_builder/screens/case_selection/screen_components/case_card.dart';
@@ -31,10 +31,54 @@ import 'screen_components/appbar.dart';
 class NewBuildScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
     return Scaffold(
       appBar: NewBuildAppBar(),
       body: Consumer<NewBuildProvider>(
           builder: (_, state, __) => SoftListView([
+                state.isPartsSelected
+                    ? SoftContainer(
+                        margin: EdgeInsets.only(bottom: 10, left: 10, right: 10),
+                        padding: EdgeInsets.all(8),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Total Price:",
+                                  style: theme.textTheme.headline2.copyWith(fontSize: 16),
+                                ),
+                                PriceChip(price: state.buildPrice)
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Consumption:",
+                                  style: theme.textTheme.headline2.copyWith(fontSize: 16),
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      FontAwesomeIcons.bolt,
+                                      color: theme.textTheme.headline1.color,
+                                      size: 16,
+                                    ),
+                                    Text(
+                                      state.totalConsumption.toString(),
+                                      style: theme.textTheme.headline1.copyWith(fontSize: 18),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      )
+                    : SizedBox(),
                 state.cpu == null
                     ? AddPartCard(
                         icon: PCParts.cpu,

@@ -1,3 +1,5 @@
+import 'package:pc_builder/models/autobuild.dart';
+
 class VideoCard {
   int boost;
   String chipset;
@@ -87,11 +89,43 @@ class VideoCard {
 
   double get coolingValue {
     switch (cooling) {
-      case "1 Fan": return 1;
-      case "2 Fans": return 1.5;
-      case "3 Fans": return 2;
-      case "4 Fans": return 2.5;        
-      default: return 0;
+      case "1 Fan":
+        return 1;
+      case "2 Fans":
+        return 1.5;
+      case "3 Fans":
+        return 2;
+      case "4 Fans":
+        return 2.5;
+      default:
+        return 0;
     }
+  }
+
+  CountingRow toCountingRow() {
+    return CountingRow(this, [
+      Cell(1, boost?.toDouble() ?? clock?.toDouble() ?? 0),
+      Cell(2, clock?.toDouble() ?? 0),
+      Cell(3, memory?.toDouble() ?? 0),
+      Cell(4, price),
+      Cell(5, consumption?.toDouble() ?? 300),
+      Cell(6, ddrValue),
+      Cell(7, coolingValue),
+    ]);
+  }
+
+  static List<CountingColumn> getCountingColumns(BuildWeights weights) {
+    var videoCardValue = weights.gaming * 1.5 + weights.contentCreation / 2;
+    var values = weights.storage + weights.multitasking;
+
+    return [
+      CountingColumn(1, "Boost", videoCardValue * 0.2 + values * 0.2, true),
+      CountingColumn(2, "Clock", videoCardValue * 0.2 + values * 0.2, true),
+      CountingColumn(3, "Memory", videoCardValue * 0.3 + values * 0.25, true),
+      CountingColumn(4, "Price", weights.price, false),
+      CountingColumn(5, "Consumption", weights.consumption + values * 0.1, false),
+      CountingColumn(6, "DDr", videoCardValue * 0.25 + values * 0.2, true),
+      CountingColumn(7, "Cooling", videoCardValue * 0.05 + values * 0.05, true),
+    ];
   }
 }

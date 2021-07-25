@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pc_builder/models/autobuild.dart';
-import 'package:pc_builder/providers/build_generation/autobuild_provider.dart';
+import 'package:pc_builder/providers/build_generation/bw_autobuild_provider.dart';
 
 class BestCriteriaSelectionProvider extends ChangeNotifier {
-  AutoBuildProvider autobuildProvider;
+  BWAutoBuildProvider autobuildProvider;
 
   List<Criteria> criterias;
 

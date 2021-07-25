@@ -54,7 +54,7 @@ class AlgorithmLogic {
     return distanceWorst / (distanceBest + distanceWorst);
   }
 
-  countBySimple(List<CountingRow> data, List<CountingColumn> columns) {
+  countByWSM(List<CountingRow> data, List<CountingColumn> columns) {
     for (var column in columns) {
       if (column.greaterIsBetter)
         column.denominater =
@@ -65,21 +65,71 @@ class AlgorithmLogic {
     }
 
     for (var row in data) {
-      row.component.perfermanceScore = _countVector(row, columns);
+      row.component.perfermanceScore = _countPerfermanceScore(row, columns);
     }
   }
 
-  double _countVector(CountingRow row, List<CountingColumn> columns) {
+  double _countPerfermanceScore(CountingRow row, List<CountingColumn> columns) {
     for (var cell in row.cells) {
       var column = columns.firstWhere((e) => e.id == cell.columnId);
       if (column.greaterIsBetter)
-        cell.weightedValue = cell.value / column.denominater * column.weight;
+        cell.weightedValue =
+            cell.value == 0 ? 0.01 : cell.value / column.denominater * column.weight;
       else
-        cell.weightedValue = column.denominater / cell.value * column.weight;
+        cell.weightedValue =
+            column.denominater / cell.value == 0 ? 0.01 : cell.value * column.weight;
     }
 
     return row.cells.sum((e) => e.weightedValue);
   }
+
+  countByVIKOR(List<CountingRow> data, List<CountingColumn> columns) {
+    for (var column in columns) {
+      if (column.greaterIsBetter) {
+        column.idealBest =
+            data.select((e, _) => e.cells.firstWhere((e) => e.columnId == column.id).value).max();
+        column.idealWorst =
+            data.select((e, _) => e.cells.firstWhere((e) => e.columnId == column.id).value).min();
+      } else {
+        column.idealBest =
+            data.select((e, _) => e.cells.firstWhere((e) => e.columnId == column.id).value).min();
+        column.idealWorst =
+            data.select((e, _) => e.cells.firstWhere((e) => e.columnId == column.id).value).max();
+      }
+    }
+
+    for (var row in data) {
+      _countUnityMeasure(row, columns);
+    }
+
+    var sStar = data.select((r, _) => r.distanceBest).min();
+    var sMinus = data.select((r, _) => r.distanceBest).max();
+
+    var rStar = data.select((r, _) => r.distanceWorst).min();
+    var rMinus = data.select((r, _) => r.distanceWorst).max();
+
+    for (var row in data) {
+      row.component.perfermanceScore = -1 * _calculateQi(row, sStar, sMinus, rStar, rMinus);
+    }
+  }
+
+  _countUnityMeasure(CountingRow row, List<CountingColumn> columns) {
+    for (var cell in row.cells) {
+      var column = columns.firstWhere((e) => e.id == cell.columnId);
+      if (column.idealBest - cell.value == 0)
+        cell.weightedValue = 0;
+      else
+        cell.weightedValue = column.weight *
+            ((column.idealBest - cell.value) / (column.idealBest - column.idealWorst));
+    }
+
+    row.distanceBest = row.cells.sum((c) => c.weightedValue);
+    row.distanceWorst = row.cells.select((c, _) => c.weightedValue).max();
+  }
+
+  _calculateQi(CountingRow row, double sStar, double sMinus, double rStar, double rMinus) {
+    var v = 0.5;
+    return v * (row.distanceBest - sStar) / (sMinus - sStar) +
+        (1 - v) * (row.distanceWorst - rStar) / (rMinus - rStar);
+  }
 }
-
-

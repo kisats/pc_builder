@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pc_builder/components/component_card.dart';
 import 'package:pc_builder/components/icons/p_c_parts_icons.dart';
-import 'package:pc_builder/main.dart';
 import 'package:pc_builder/models/cooler.dart';
 import 'package:pc_builder/providers/new_build_provider.dart';
 import 'package:provider/provider.dart';

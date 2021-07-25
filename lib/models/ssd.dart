@@ -1,3 +1,5 @@
+import 'package:pc_builder/models/autobuild.dart';
+
 class SSD {
   int cache;
   double capacity;
@@ -50,5 +52,30 @@ class SSD {
     data['priceGB'] = this.priceGB;
     data['rating'] = this.rating;
     return data;
+  }
+
+  CountingRow toCountingRow() {
+    return CountingRow(this, [
+      Cell(1, capacity),
+      Cell(2, cache?.toDouble() ?? 0),
+      Cell(3, price),
+      Cell(4, isNVME ? 1.5 : 0.4),
+    ]);
+  }
+
+  static List<CountingColumn> getCountingColumns(BuildWeights weights) {
+    var ssdValue = weights.storage * 2 +
+        weights.multitasking / 1.33 +
+        weights.contentCreation / 1.66 +
+        weights.gaming / 4 +
+        weights.consumption / 4;
+
+    return [
+      CountingColumn(1, "Storage", ssdValue * 0.5, true),
+      CountingColumn(2, "Cache", ssdValue * 0.25, true),
+      CountingColumn(
+          3, "Price", weights.price + weights.consumption / 2, false),
+      CountingColumn(4, "Nvme", ssdValue * 0.25, true),
+    ];
   }
 }

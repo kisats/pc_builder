@@ -3,7 +3,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pc_builder/components/fade_route.dart';
 import 'package:pc_builder/components/soft_button.dart';
 import 'package:pc_builder/providers/new_build_provider.dart';
+import 'package:pc_builder/screens/build_generation_screens/algorithm_selection/algorithm_selection.dart';
 import 'package:pc_builder/screens/build_generation_screens/build_generation_bw/build_generation_best.dart';
+import 'package:pc_builder/screens/build_generation_screens/build_generation_ranking/build_generation_ranking.dart';
+import 'package:pc_builder/screens/build_generation_screens/build_generation_smart/build_generation_smart.dart';
 import 'package:pc_builder/screens/home_page/screen_components/appbar.dart';
 import 'package:pc_builder/screens/new_build/new_build.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +24,7 @@ class HomePage extends StatelessWidget {
           children: [
             SoftButton(
               width: MediaQuery.of(context).size.width / 1.5,
-              onTap: () => Navigator.of(context).push(FadeRoute(page: BuildGenerationBestScreen())),
+              onTap: () => Navigator.of(context).push(FadeRoute(page: AlgorithmSelectionScreen())),
               padding: const EdgeInsets.all(12),
               child: Column(
                 children: [

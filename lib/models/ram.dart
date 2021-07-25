@@ -1,3 +1,5 @@
+import 'package:pc_builder/models/autobuild.dart';
+
 class RAM {
   String name;
   double casLatency;
@@ -56,12 +58,47 @@ class RAM {
     return data;
   }
 
-    double get ddrValue{
+  double get ddrValue {
     switch (memoryType) {
-      case "DDR2": return 2;
-      case "DDR3": return 4;
-      case "DDR4": return 7;
-      default: return 0;
+      case "DDR2":
+        return 2;
+      case "DDR3":
+        return 4;
+      case "DDR4":
+        return 7;
+      default:
+        return 0;
     }
+  }
+
+  CountingRow toCountingRow() {
+    return CountingRow(this, [
+      Cell(1, voltage),
+      Cell(2, (stickMemory * stickCount).toDouble()),
+      Cell(3, price),
+      Cell(4, casLatency),
+      Cell(5, fwLatency),
+      Cell(6, ddrValue),
+      Cell(7, speed.toDouble())
+    ]);
+  }
+
+  static List<CountingColumn> getCountingColumns(BuildWeights weights) {
+    var ramValue = weights.multitasking * 2 +
+        weights.contentCreation / 1.33 +
+        weights.gaming / 1.66 +
+        weights.storage / 2 +
+        weights.consumption / 2;
+
+    return [
+      CountingColumn(1, "Voltage", ramValue * 0.1, true),
+      CountingColumn(2, "Memory", ramValue * 0.20, true),
+      CountingColumn(
+          3, "Price", weights.price + weights.storage / 2 + weights.consumption / 2, false),
+      CountingColumn(4, "CasLatency", ramValue * 0.1, true),
+      CountingColumn(5, "FwLatency", ramValue * 0.1, true),
+      CountingColumn(6, "DDR", ramValue * 0.28, true),
+      CountingColumn(7, "Speed", ramValue * 0.22, true),
+    ];
   }
 }

@@ -1,3 +1,5 @@
+import 'package:pc_builder/models/autobuild.dart';
+
 class PowerSupply {
   String efficiency;
   String formFactor;
@@ -19,7 +21,7 @@ class PowerSupply {
       this.price,
       this.rating,
       this.wattage});
-  
+
   double get efficiencyValue {
     switch (efficiency) {
       case "80+":
@@ -61,5 +63,23 @@ class PowerSupply {
     data['rating'] = this.rating;
     data['wattage'] = this.wattage;
     return data;
+  }
+
+  CountingRow toCountingRow() {
+    return CountingRow(this, [
+      Cell(1, wattage.toDouble()),
+      Cell(2, price),
+      Cell(3, efficiencyValue),
+    ]);
+  }
+
+  static List<CountingColumn> getCountingColumns(BuildWeights weights) {
+    var psu = weights.storage + weights.gaming + weights.multitasking + weights.contentCreation;
+
+    return [
+      CountingColumn(1, "Wattage", weights.consumption * 0.1 + psu * 0.05, true),
+      CountingColumn(2, "Price", weights.price + psu * 0.75, false),
+      CountingColumn(3, "Efficiency", weights.consumption * 0.9 + psu * 0.20, true),
+    ];
   }
 }

@@ -70,11 +70,6 @@ class BestWorstMethodLogic {
       ..addConstraints(constraints)
       ..flushUpdates();
 
-    print(
-        "${gaming.value} ${contentCreation.value} ${storage.value} ${multitasking.value} ${consumption.value} ${price.value}");
-
-    print("${constant.value}");
-
     return BuildWeights(price.value, gaming.value, consumption.value, contentCreation.value,
         storage.value, multitasking.value, constant.value);
   }

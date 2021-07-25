@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pc_builder/components/fade_route.dart';
 import 'package:pc_builder/components/soft_container.dart';
-import 'package:pc_builder/providers/build_generation/autobuild_provider.dart';
+import 'package:pc_builder/providers/build_generation/build_generator_provider.dart';
+import 'package:pc_builder/providers/build_generation/bw_autobuild_provider.dart';
 import 'package:pc_builder/screens/build_generation_screens/build_generation_bw/screen_components/action_button.dart';
 import 'package:pc_builder/screens/build_generation_screens/build_generation_bw/screen_components/appbar.dart';
 import 'package:pc_builder/screens/build_generation_screens/build_generation_bw/screen_components/lianear_loading.dart';
@@ -16,7 +17,7 @@ class BuildGenerationProcess extends StatelessWidget {
     var theme = Theme.of(context);
     return Scaffold(
       appBar: BuildGenerationAppBar(),
-      body: Consumer<AutoBuildProvider>(
+      body: Consumer<BuildGeneratorProvider>(
         builder: (_, state, __) {
           var maxWeight = state.getMaxWeight();
           return SizedBox(
@@ -66,13 +67,16 @@ class BuildGenerationProcess extends StatelessWidget {
                                         name: "Consumption",
                                         weight: state.weights.consumption,
                                         value: state.weights.consumption / maxWeight),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        "Inconsistency ratio: ${state.weights.constant.toStringAsFixed(3)}",
-                                        style: theme.textTheme.headline2.copyWith(fontSize: 16),
-                                      ),
-                                    ),
+                                    /* state.weights.constant != null
+                                        ? Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              "Inconsistency ratio: ${state.weights.constant.toStringAsFixed(3)}",
+                                              style:
+                                                  theme.textTheme.headline2.copyWith(fontSize: 16),
+                                            ),
+                                          )
+                                        : SizedBox(), */
                                   ],
                                 )
                               : Column(

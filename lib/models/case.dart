@@ -1,3 +1,5 @@
+import 'package:pc_builder/models/autobuild.dart';
+
 class Case {
   int externalBays;
   String image;
@@ -42,5 +44,21 @@ class Case {
     data['sidePanel'] = this.sidePanel;
     data['type'] = this.type;
     return data;
+  }
+
+  CountingRow toCountingRow() {
+    return CountingRow(this, [
+      Cell(1, externalBays?.toDouble() ?? 0),
+      Cell(2, price),
+      Cell(3, sidePanel == null || sidePanel == "None" ? 1 : 2),
+    ]);
+  }
+
+  static List<CountingColumn> getCountingColumns(BuildWeights weights) {
+    return [
+      CountingColumn(1, "Bays", 0.125, true),
+      CountingColumn(2, "Price", 0.75, false),
+      CountingColumn(3, "Side panel", 0.125, true)
+    ];
   }
 }

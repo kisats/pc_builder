@@ -21,6 +21,28 @@ class NewBuildProvider extends ChangeNotifier {
 
   bool isGenerated;
 
+  double get buildPrice =>
+      (cpu?.price ?? 0) +
+      (motherboard?.price ?? 0) +
+      (ram?.price ?? 0) +
+      (gpu?.price ?? 0) +
+      (ssd?.price ?? 0) +
+      (psu?.price ?? 0) +
+      (cooler?.price ?? 0) +
+      (pcCase?.price ?? 0);
+
+  int get totalConsumption => (cpu?.consumption ?? 0) + (gpu?.consumption ?? 0);
+
+  bool get isPartsSelected =>
+      cpu != null ||
+      motherboard != null ||
+      ram != null ||
+      gpu != null ||
+      ssd != null ||
+      ssd != null ||
+      cooler != null ||
+      pcCase != null;
+
   prefillBuild(Build build, bool isGenerated) {
     isGenerated = isGenerated;
     cpu = build.cpu;

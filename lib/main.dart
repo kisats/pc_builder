@@ -5,7 +5,7 @@ import 'package:pc_builder/my_app.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+/*   Firestore.initialize("pcbuilder-24b23"); */
   FireStore().initialize();
-  /* Firestore.initialize("pcbuilder-24b23"); */
   runApp(MyApp());
 }

@@ -1,3 +1,5 @@
+import 'package:pc_builder/models/autobuild.dart';
+
 class Cpu {
   String image;
   int cores;
@@ -57,5 +59,27 @@ class Cpu {
     data['architecture'] = this.architecture;
     data['coreFamily'] = this.coreFamily;
     return data;
+  }
+
+  CountingRow toCountingRow() {
+    return CountingRow(this, [
+      Cell(1, cores.toDouble()),
+      Cell(2, speed),
+      Cell(3, boost ?? speed),
+      Cell(4, price),
+      Cell(5, consumption?.toDouble() ?? 180)
+    ]);
+  }
+
+  static List<CountingColumn> getCountingColumns(BuildWeights weights) {
+    return [
+      CountingColumn(1, "Cores", weights.multitasking + weights.storage / 5, true),
+      CountingColumn(2, "Speed",
+          weights.contentCreation / 1.5 + weights.gaming / 3 + weights.storage / 5, true),
+      CountingColumn(3, "Boost",
+          weights.contentCreation / 1.5 + weights.gaming / 3 + weights.storage / 5, true),
+      CountingColumn(4, "Price", weights.price + weights.storage / 5, false),
+      CountingColumn(5, "Consumption", weights.consumption + weights.storage / 5, false)
+    ];
   }
 }

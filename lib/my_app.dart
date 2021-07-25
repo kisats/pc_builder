@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pc_builder/providers/build_generation/autobuild_provider.dart';
+import 'package:pc_builder/providers/algorithm_selection_provider.dart';
+import 'package:pc_builder/providers/build_generation/build_generator_provider.dart';
+import 'package:pc_builder/providers/build_generation/bw_autobuild_provider.dart';
+import 'package:pc_builder/providers/build_generation/ranking_autobuild_provider.dart';
 import 'package:pc_builder/providers/new_build_provider.dart';
 import 'package:pc_builder/screens/home_page/home_page.dart';
 import 'package:provider/provider.dart';
@@ -12,11 +15,21 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider<NewBuildProvider>(
             create: (context) => NewBuildProvider(),
           ),
-          ChangeNotifierProvider<AutoBuildProvider>(
-            create: (context) => AutoBuildProvider(),
+          ChangeNotifierProvider<BWAutoBuildProvider>(
+            create: (context) => BWAutoBuildProvider(),
+          ),
+          ChangeNotifierProvider<RankingAutoBuildProvider>(
+            create: (context) => RankingAutoBuildProvider(),
+          ),
+          ChangeNotifierProvider<BuildGeneratorProvider>(
+            create: (context) => BuildGeneratorProvider(),
+          ),
+          ChangeNotifierProvider<AlgorithmSelectionProvider>(
+            create: (context) => AlgorithmSelectionProvider(),
           ),
         ],
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
           theme: ThemeData(
               primarySwatch: Colors.blue,

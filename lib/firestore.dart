@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+
 import 'dart:convert';
 
 import 'package:pc_builder/models/case.dart';
@@ -61,7 +62,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
   loadCpus() async {
     cpuList = [];
-    if (_cpuCollection == null) _cpuCollection = Firestore.instance.collection('cputest');
+    if (_cpuCollection == null) await initialize();
     var res = await _getSnapshot(_cpuCollection, "cpus");
     /* res.docs.forEach((doc) {
       cpuList += (doc.data()['cpus'] as List).map((e) => Cpu.fromJson(e)).toList();

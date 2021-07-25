@@ -1,3 +1,5 @@
+import 'package:pc_builder/models/autobuild.dart';
+
 class Motherboard {
   String image;
   int maxRam;
@@ -42,5 +44,20 @@ class Motherboard {
     data['size'] = this.size;
     data['socket'] = this.socket;
     return data;
+  }
+
+  CountingRow toCountingRow() {
+    return CountingRow(this, [
+      Cell(1, price),
+      Cell(2, maxRam?.toDouble() ?? 0),
+    ]);
+  }
+
+  static List<CountingColumn> getCountingColumns(BuildWeights weights) {
+    return [
+      CountingColumn(1, "Price",
+          weights.price + weights.consumption + weights.storage + weights.gaming, false),
+      CountingColumn(2, "Ram", weights.multitasking + weights.contentCreation, true),
+    ];
   }
 }

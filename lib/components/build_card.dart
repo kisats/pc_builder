@@ -171,7 +171,7 @@ class BuildCard extends StatelessWidget {
                                 children: [
                                   SizedBox(height: 10),
                                   Text(
-                                      "Perfermance Score: ${pcBuild.perfermanceScore.toStringAsFixed(5)}",
+                                      "Perfermance Score: ${pcBuild.perfermanceScore.abs().toStringAsFixed(5)}",
                                       textAlign: TextAlign.start,
                                       style: theme.textTheme.headline3),
                                 ],
